@@ -39,7 +39,7 @@ export const emailGetManyFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Only emails sent from this address',
-				routing: { send: { type: 'query', property: 'from' } },
+				routing: { request: { qs: { from: '={{ $value }}' } } },
 			},
 			{
 				displayName: 'Search',
@@ -47,7 +47,7 @@ export const emailGetManyFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Text to match in the subject or an address',
-				routing: { send: { type: 'query', property: 'q' } },
+				routing: { request: { qs: { q: '={{ $value }}' } } },
 			},
 			{
 				displayName: 'Since',
@@ -55,7 +55,7 @@ export const emailGetManyFields: INodeProperties[] = [
 				type: 'dateTime',
 				default: '',
 				description: 'Only emails created at or after this time',
-				routing: { send: { type: 'query', property: 'since' } },
+				routing: { request: { qs: { since: '={{ $value }}' } } },
 			},
 			{
 				displayName: 'Status',
@@ -78,7 +78,7 @@ export const emailGetManyFields: INodeProperties[] = [
 					{ name: 'Suppressed', value: 'suppressed' },
 				],
 				routing: {
-					send: { type: 'query', property: 'status', value: '={{ $value.join(",") }}' },
+					request: { qs: { status: '={{ $value.join(",") }}' } },
 				},
 			},
 			{
@@ -88,7 +88,7 @@ export const emailGetManyFields: INodeProperties[] = [
 				default: '',
 				placeholder: 'e.g. campaign:welcome',
 				description: 'Only emails carrying this tag',
-				routing: { send: { type: 'query', property: 'tag' } },
+				routing: { request: { qs: { tag: '={{ $value }}' } } },
 			},
 			{
 				displayName: 'To',
@@ -96,7 +96,7 @@ export const emailGetManyFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Only emails sent to this address',
-				routing: { send: { type: 'query', property: 'to' } },
+				routing: { request: { qs: { to: '={{ $value }}' } } },
 			},
 			{
 				displayName: 'Until',
@@ -104,7 +104,7 @@ export const emailGetManyFields: INodeProperties[] = [
 				type: 'dateTime',
 				default: '',
 				description: 'Only emails created before this time',
-				routing: { send: { type: 'query', property: 'until' } },
+				routing: { request: { qs: { until: '={{ $value }}' } } },
 			},
 		],
 	},

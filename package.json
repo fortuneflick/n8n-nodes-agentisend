@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-agentisend",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Send transactional email from your own verified domain with AgentiSend, and start workflows on delivery, bounce, open and click events.",
 	"license": "MIT",
 	"homepage": "https://github.com/fortuneflick/n8n-nodes-agentisend#readme",

@@ -1,0 +1,156 @@
+{
+  "name": "Check an email with AgentiSend, then send it only if every check passes",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Preflight, then send\nPreflight runs every check a send runs (domain, suppression list, budget, content) and sends nothing. The IF node only lets the send through when every check passed.\n\nTo test without delivering anything, send to delivered@simulator.agentisend.com.",
+        "width": 380,
+        "height": 260
+      },
+      "id": "af9e942e-432b-512a-81b3-c3d575d6f7cf",
+      "name": "Note ## Preflight",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "54fcf7d3-c64e-502b-9a80-262c7eca61a1",
+      "name": "When clicking 'Execute workflow'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "email",
+        "operation": "preflight",
+        "from": "onboarding@agentisend.com",
+        "to": "delivered@simulator.agentisend.com",
+        "subject": "Your receipt",
+        "text": "Thanks for your order."
+      },
+      "id": "e93dbc26-461e-54b4-a9bd-04a61456db26",
+      "name": "Preflight",
+      "type": "n8n-nodes-agentisend.agentiSend",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "credentials": {
+        "agentiSendApi": {
+          "id": "",
+          "name": "AgentiSend account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8755ea99-93c3-5446-a731-5c3930f78bea",
+      "name": "All checks passed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "email",
+        "operation": "send",
+        "from": "onboarding@agentisend.com",
+        "to": "delivered@simulator.agentisend.com",
+        "subject": "Your receipt",
+        "text": "Thanks for your order.",
+        "additionalFields": {}
+      },
+      "id": "1dfc14d3-95c8-5136-baae-4dba519012a3",
+      "name": "Send",
+      "type": "n8n-nodes-agentisend.agentiSend",
+      "typeVersion": 1,
+      "position": [
+        660,
+        -100
+      ],
+      "credentials": {
+        "agentiSendApi": {
+          "id": "",
+          "name": "AgentiSend account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute workflow'": {
+      "main": [
+        [
+          {
+            "node": "Preflight",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preflight": {
+      "main": [
+        [
+          {
+            "node": "All checks passed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All checks passed?": {
+      "main": [
+        [
+          {
+            "node": "Send",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}

@@ -162,7 +162,7 @@ export const contactDescription: INodeProperties[] = [
 				placeholder: 'e.g. name@email.com',
 				default: '',
 				description: 'Only the contact with this address',
-				routing: { send: { type: 'query', property: 'email' } },
+				routing: { request: { qs: { email: '={{ $value }}' } } },
 			},
 			{
 				displayName: 'Search',
@@ -170,7 +170,7 @@ export const contactDescription: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Text to match in the address or name',
-				routing: { send: { type: 'query', property: 'q' } },
+				routing: { request: { qs: { q: '={{ $value }}' } } },
 			},
 		],
 	},

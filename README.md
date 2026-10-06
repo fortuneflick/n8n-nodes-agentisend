@@ -65,6 +65,13 @@ Built with `@n8n/node-cli` 0.51 for the n8n 1.x and 2.x node API (`n8nNodesApiVe
 
 **When a send is refused**, the error shows AgentiSend's message and its `fix`. Run **Email → Explain** on the email ID for the full story.
 
+## Example workflows
+
+Import any of these in n8n (**Workflows → Import from File**), then pick your credential in each node:
+
+* [Daily report of bounced and complained emails from AgentiSend](examples/daily-bounce-report.json)
+* [Check an email with AgentiSend, then send it only if every check passes](examples/preflight-then-send.json)
+
 ## Resources
 
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
@@ -74,6 +81,10 @@ Built with `@n8n/node-cli` 0.51 for the n8n 1.x and 2.x node API (`n8nNodesApiVe
 * [API reference](https://agentisend.com/docs/api)
 
 ## Version history
+
+### 0.1.1
+
+Get Many with Return All now keeps your filters on every page (before, Return All ignored them). Example workflows added.
 
 ### 0.1.0
 

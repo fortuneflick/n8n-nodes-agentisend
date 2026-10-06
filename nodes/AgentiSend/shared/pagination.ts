@@ -1,4 +1,4 @@
-import type { IDisplayOptions, INodeProperties } from 'n8n-workflow';
+import type { IDataObject, IDisplayOptions, INodeProperties } from 'n8n-workflow';
 
 type Show = NonNullable<IDisplayOptions['show']>;
 
@@ -25,11 +25,10 @@ export function cursorPagination(show: Show): INodeProperties[] {
 						type: 'generic',
 						properties: {
 							continue: '={{ !!$response.body.has_more && !!$response.body.next_cursor }}',
+							// n8n spreads this over the request options, so a bare qs object would
+							// replace the filters; start from the original query ($request.qs).
 							request: {
-								qs: {
-									limit: 100,
-									cursor: '={{ $response.body.next_cursor }}',
-								},
+								qs: '={{ Object.assign({}, $request.qs, { limit: 100 }, $response.body && $response.body.next_cursor ? { cursor: $response.body.next_cursor } : {}) }}' as unknown as IDataObject,
 							},
 						},
 					},

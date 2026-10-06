@@ -1,0 +1,119 @@
+{
+  "name": "Daily report of bounced and complained emails from AgentiSend",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Daily bounce and complaint report\nEvery morning, list the emails that bounced or were marked as spam in the last 24 hours, with AgentiSend's explanation for each. Add a Slack or email node at the end to deliver the list.",
+        "width": 380,
+        "height": 260
+      },
+      "id": "adbe1f7f-5381-5f1a-9a41-ec6662eb1abf",
+      "name": "Note ## Daily bou",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "96887b5f-e97e-5454-84dd-4058dab19dac",
+      "name": "Every morning",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "email",
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "status": [
+            "bounced",
+            "complained"
+          ],
+          "since": "={{ $now.minus({ days: 1 }).toISO() }}"
+        }
+      },
+      "id": "906b91ba-c4d0-5fbc-85ae-2290d716f519",
+      "name": "Bounced or complained",
+      "type": "n8n-nodes-agentisend.agentiSend",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "credentials": {
+        "agentiSendApi": {
+          "id": "",
+          "name": "AgentiSend account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "email",
+        "operation": "explain",
+        "emailId": "={{ $json.id }}"
+      },
+      "id": "472ccd6b-75df-50a6-9904-c8dc7e6a91d8",
+      "name": "Explain each",
+      "type": "n8n-nodes-agentisend.agentiSend",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "credentials": {
+        "agentiSendApi": {
+          "id": "",
+          "name": "AgentiSend account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every morning": {
+      "main": [
+        [
+          {
+            "node": "Bounced or complained",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bounced or complained": {
+      "main": [
+        [
+          {
+            "node": "Explain each",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
